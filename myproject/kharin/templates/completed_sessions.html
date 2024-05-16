@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Sessions</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'all-sessions' %}" class="btn btn-primary mt-3">Назад до всіх фотосесій</a>
+        <h1 class="mt-5">Завершені фотосесії</h1>
+        <ul class="list-group mt-3">
+            {% for session in completed_sessions %}
+                <li class="list-group-item">
+                    <strong>Session Date:</strong> {{ session.session.date }}<br>
+                    <strong>Client:</strong> {{ session.session.client.name }}<br>
+                    <strong>Photographer:</strong> {{ session.photographer_name }}<br>
+                    <strong>Completed Date:</strong> {{ session.completed_date }}<br>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

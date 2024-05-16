@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Sessions</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'sessions-by-email' %}" class="btn btn-secondary mt-3">Повернутися до сеансів по електронній пошті</a>
+        <h1 class="mt-5">Усі фотосесії</h1>
+        <form action="" method="get" class="mt-3">
+            <div class="form-row">
+                <div class="col">
+                    <input type="date" class="form-control" name="start_date" placeholder="Початкова дата">
+                </div>
+                <div class="col">
+                    <input type="date" class="form-control" name="end_date" placeholder="Кінцева дата">
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </div>
+        </form>
+        <ul class="list-group mt-3">
+            {% for session in sessions %}
+                {% if not session.completedsessions_set.exists %}
+                    <li class="list-group-item">
+                        <strong>Date:</strong> {{ session.date }}<br>
+                        <strong>Location:</strong> {{ session.location }}<br>
+                        <strong>Client:</strong> {{ session.client.name }}<br>
+                        <strong>Email:</strong> {{ session.client.email }}<br>
+                        <strong>Phone:</strong> {{ session.client.phone }}<br>
+                        {% if request.user.role == 'admin' %}
+                            <form action="{% url 'confirm-completion' session.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm mt-2">Підтвердити завершення</button>
+                            </form>
+                        {% endif %}
+                        <form action="{% url 'delete-session' session.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm mt-2">Видалити</button>
+                        </form>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <form action="{% url 'completed-sessions' %}" method="get">
+            <button type="submit" class="btn btn-primary mt-3">Переглянути завершені сеанси</button>
+        </form>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
